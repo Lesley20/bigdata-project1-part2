@@ -49,6 +49,7 @@ def get_data(APP_KEY, page_size, num_pages, output):
 
 		else: 
 			es = Elasticsearch()
+			
 			for i in range (num_pages):
 				data = client.get('nc67-uf89', limit=page_size, offset=i*page_size)
 
