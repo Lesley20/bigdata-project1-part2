@@ -4,31 +4,31 @@ from datetime import datetime
 from elasticsearch import Elasticsearch
 
 def create_and_update_index(index_name, doc_type):
-	es = Elasticsearch(timeout=10)
+	es = Elasticsearch()
 	try:
-		es.indices.create(index=index_name, doc_type=doc_type)
+		es.indices.create(index=index_name)
 	except Exception:
 		pass
-	
+	"""
 	es.indices.put_mapping(
 		index=index_name,
 		doc_type=doc_type,
-		body={
-			doc_type:{
-				"properties":{"issue_date": { "type": "date"}, 
+		body = {
+			doc_type{
+				"properties": {"issue_date": {"type": "date"},
 				}
 			}
 		}
-	)
-	
 
+	)
+
+	"""
 	return es
 
 
 def load_ES(results, es):
-	print(results)
 	for result in results:
-		res = es.index(index="violationparking-index", doc_type="violations", body = result,)
+		res = es.index(index="violationparking-index", doc_type="violations", body = result, id = '_id')
 		print(res['result'])
 
 
@@ -71,6 +71,8 @@ def get_data(APP_KEY, page_size, num_pages, output):
 	except Exception as e:
 		print(f'Something went wrong {e}')
 		raise 
+
+
 
 """
 def load_ES():
