@@ -9,7 +9,7 @@ def create_and_update_index(index_name, doc_type):
 		es.indices.create(index=index_name)
 	except Exception:
 		pass
-
+	"""
 	es.indices.put_mapping(
 		index = index_name,
 		doc_type = doc_type,
@@ -18,13 +18,13 @@ def create_and_update_index(index_name, doc_type):
 				"properties": {"issue_date": {"type": "date"}, }
 			}
 		}
-	)
+	)"""
 	return es
 
 
 def load_ES(results, es):
-	for result in results:
-		res = es.index(index="violationparking-index", doc_type="violations", body = result, id = '_id')
+		results['issue_date'] = datetime.strptime(results['issue_date'], '%m/%d/%Y',)
+		res = es.index(index="violationparking-index", doc_type="violations", body = results)
 		print(res['result'])
 
 
@@ -45,8 +45,6 @@ def get_data(APP_KEY, page_size, num_pages, output):
 
 
 		else: 
-			#es = Elasticsearch()
-
 			for i in range (num_pages):
 				data = client.get('nc67-uf89', limit=page_size, offset=i*page_size)
 
