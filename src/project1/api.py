@@ -14,7 +14,7 @@ def create_and_update_index(index_name, doc_type):
 		index = index_name,
 		doc_type = doc_type,
 		body = {
-			doc_type{
+			doc_type: {
 				"properties": {"issue_date": {"type": "date"}, }
 			}
 		}
@@ -24,11 +24,6 @@ def create_and_update_index(index_name, doc_type):
 
 def load_ES(results, es):
 	for result in results:
-		result["issue_date"] = datetime.strptime(
-			result["issue_date"],
-			'%m/%d/%Y',
-			)
-
 		res = es.index(index="violationparking-index", doc_type="violations", body = result, id = '_id')
 		print(res['result'])
 
