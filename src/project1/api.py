@@ -9,25 +9,26 @@ def create_and_update_index(index_name, doc_type):
 		es.indices.create(index=index_name)
 	except Exception:
 		pass
-	"""
+
 	es.indices.put_mapping(
-		index=index_name,
-		doc_type=doc_type,
+		index = index_name,
+		doc_type = doc_type,
 		body = {
 			doc_type{
-				"properties": {"issue_date": {"type": "date"},
-				}
+				"properties": {"issue_date": {"type": "date"}, }
 			}
 		}
-
 	)
-
-	"""
 	return es
 
 
 def load_ES(results, es):
 	for result in results:
+		result["issue_date"] = datetime.strptime(
+			result["issue_date"],
+			'%m/%d/%Y',
+			)
+
 		res = es.index(index="violationparking-index", doc_type="violations", body = result, id = '_id')
 		print(res['result'])
 
